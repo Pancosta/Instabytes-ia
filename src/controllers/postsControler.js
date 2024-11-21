@@ -1,8 +1,19 @@
-import  getTodosPosts  from "../models/postModel.js";
+import  {getTodosPosts, criarPost}  from "../models/postModel.js";
 
 export async function listarPosts(req, res){
     // Obtém os posts chamando a função que busca os dados no banco
     const posts = await getTodosPosts();
     // Retorna os posts com status 200 no formato JSON
     res.status(200).json(posts);
+}
+
+export async function enviarPost(req, res) {
+    const novoPost = req.body;
+    try{
+        const postCriado = await criarPost(novoPost);
+        res.status(200).json(postCriado);
+    } catch(erro){
+        console.error(erro.message);
+        res.status(500).json({"Erro":"Falha na requisição"});
+    }    
 }
